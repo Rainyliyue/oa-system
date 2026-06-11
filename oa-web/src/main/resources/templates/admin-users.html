@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>用户管理</title>
+  <link rel="stylesheet" href="/layui/css/layui.css">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body data-admin-page="users">
+<header class="layui-header"><div class="layui-logo">用户管理</div><a href="/index">返回工作台</a></header>
+<main class="layui-body" style="margin-left:0">
+  <section class="layui-card"><div class="layui-card-body"><div class="toolbar"><input id="keyword" class="layui-input" placeholder="用户名/姓名/部门"><button id="searchBtn" class="layui-btn">查询</button></div></div></section>
+  <section class="layui-card">
+    <div class="layui-card-header">用户表单</div>
+    <div class="layui-card-body">
+      <form id="crudForm" class="layui-form">
+        <input type="hidden" name="id">
+        <div class="layui-form-item"><label class="layui-form-label">用户名</label><input class="layui-input" name="username"></div>
+        <div class="layui-form-item"><label class="layui-form-label">密码</label><input class="layui-input" name="password" placeholder="修改时可留空"></div>
+        <div class="layui-form-item"><label class="layui-form-label">姓名</label><input class="layui-input" name="realName"></div>
+        <div class="layui-form-item"><label class="layui-form-label">手机</label><input class="layui-input" name="phone"></div>
+        <div class="layui-form-item"><label class="layui-form-label">部门</label><input class="layui-input" name="department"></div>
+        <div class="layui-form-item"><label class="layui-form-label">角色ID</label><input class="layui-input" name="roleIds" placeholder="如 1,2"></div>
+        <div class="layui-form-item"><label class="layui-form-label">启用</label><select class="layui-select" name="enabled"><option value="true">是</option><option value="false">否</option></select></div>
+        <div class="layui-form-item"><button class="layui-btn" type="submit">保存</button><button id="resetBtn" class="layui-btn layui-btn-primary" type="button">清空</button></div>
+      </form>
+    </div>
+  </section>
+  <section class="layui-card"><div class="layui-card-header">用户列表</div><div class="layui-card-body"><div class="table-wrap"><table id="crudTable" class="layui-table"></table></div></div></section>
+</main>
+<script src="/js/common.js"></script>
+<script src="/js/admin-users.js"></script>
+</body>
+</html>
+

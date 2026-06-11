@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${title}">申请管理</title>
+  <link rel="stylesheet" href="/layui/css/layui.css">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body th:attr="data-type=${type},data-admin=${admin}">
+<header class="layui-header">
+  <div class="layui-logo" th:text="${title}">申请管理</div>
+  <a href="/index">返回工作台</a>
+</header>
+<main class="layui-body" style="margin-left:0">
+  <section class="layui-card">
+    <div class="layui-card-header">查询</div>
+    <div class="layui-card-body">
+      <div class="toolbar">
+        <input id="keyword" class="layui-input" placeholder="关键字">
+        <select id="status" class="layui-select">
+          <option value="">全部状态</option>
+          <option value="PENDING">待审批</option>
+          <option value="APPROVED">已通过</option>
+          <option value="REJECTED">未通过</option>
+          <option value="FINISHED">已结束</option>
+        </select>
+        <button id="searchBtn" class="layui-btn">查询</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="layui-card">
+    <div class="layui-card-header">填写信息</div>
+    <div class="layui-card-body">
+      <form id="applyForm" class="layui-form">
+        <input type="hidden" name="id">
+        <div class="layui-form-item admin-field">
+          <label class="layui-form-label">用户ID</label>
+          <input class="layui-input" name="userId" placeholder="管理员添加时填写">
+        </div>
+        <div class="layui-form-item admin-field">
+          <label class="layui-form-label">姓名</label>
+          <input class="layui-input" name="username" placeholder="管理员添加时填写">
+        </div>
+        <div class="layui-form-item field-reimbursement">
+          <label class="layui-form-label">报销标题</label>
+          <input class="layui-input" name="title">
+        </div>
+        <div class="layui-form-item field-trip">
+          <label class="layui-form-label">目的地</label>
+          <input class="layui-input" name="destination">
+        </div>
+        <div class="layui-form-item field-leave field-trip">
+          <label class="layui-form-label">开始日期</label>
+          <input class="layui-input" type="date" name="startDate">
+        </div>
+        <div class="layui-form-item field-leave field-trip">
+          <label class="layui-form-label">结束日期</label>
+          <input class="layui-input" type="date" name="endDate">
+        </div>
+        <div class="layui-form-item field-leave">
+          <label class="layui-form-label">请假天数</label>
+          <input class="layui-input" type="number" step="0.5" name="dayCount">
+        </div>
+        <div class="layui-form-item field-trip">
+          <label class="layui-form-label">预算</label>
+          <input class="layui-input" type="number" step="0.01" name="budget">
+        </div>
+        <div class="layui-form-item field-reimbursement">
+          <label class="layui-form-label">金额</label>
+          <input class="layui-input" type="number" step="0.01" name="amount">
+        </div>
+        <div class="layui-form-item field-leave field-trip wide">
+          <label class="layui-form-label">事由</label>
+          <textarea class="layui-textarea" name="reason"></textarea>
+        </div>
+        <div class="layui-form-item field-reimbursement wide">
+          <label class="layui-form-label">明细</label>
+          <textarea class="layui-textarea" name="detail"></textarea>
+        </div>
+        <div class="layui-form-item admin-field">
+          <label class="layui-form-label">状态</label>
+          <select class="layui-select" name="status">
+            <option value="PENDING">待审批</option>
+            <option value="APPROVED">已通过</option>
+            <option value="REJECTED">未通过</option>
+            <option value="FINISHED">已结束</option>
+          </select>
+        </div>
+        <div class="layui-form-item admin-field wide">
+          <label class="layui-form-label">审批意见</label>
+          <textarea class="layui-textarea" name="auditComment"></textarea>
+        </div>
+        <div class="layui-form-item wide">
+          <button class="layui-btn" type="submit">保存</button>
+          <button id="resetBtn" class="layui-btn layui-btn-primary" type="button">清空</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="layui-card">
+    <div class="layui-card-header">记录列表</div>
+    <div class="layui-card-body">
+      <div class="table-wrap"><table id="applyTable" class="layui-table"></table></div>
+      <div class="layui-page">
+        <button id="prevBtn" class="layui-btn layui-btn-primary">上一页</button>
+        <span id="pageInfo"></span>
+        <button id="nextBtn" class="layui-btn layui-btn-primary">下一页</button>
+      </div>
+    </div>
+  </section>
+</main>
+<script src="/js/common.js"></script>
+<script src="/js/apply-page.js"></script>
+</body>
+</html>
+

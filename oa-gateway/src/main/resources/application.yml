@@ -1,0 +1,37 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: oa-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
+      config:
+        server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
+        import-check:
+          enabled: false
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: oa-web
+          uri: lb://oa-web
+          predicates:
+            - Path=/**
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:7379}
+      database: ${REDIS_DATABASE:0}
+
+oa:
+  jwt:
+    secret: oa-system-course-design-secret-key-change-me
+    expiration-seconds: 7200
+
+logging:
+  level:
+    org.springframework.cloud.gateway: info

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>考勤管理</title>
+  <link rel="stylesheet" href="/layui/css/layui.css">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body data-admin-page="attendance">
+<header class="layui-header"><div class="layui-logo">考勤管理</div><a href="/index">返回工作台</a></header>
+<main class="layui-body" style="margin-left:0">
+  <section class="layui-card"><div class="layui-card-body"><div class="toolbar"><input id="keyword" class="layui-input" placeholder="姓名/备注"><button id="searchBtn" class="layui-btn">查询</button></div></div></section>
+  <section class="layui-card"><div class="layui-card-header">修改考勤</div><div class="layui-card-body">
+    <form id="crudForm" class="layui-form">
+      <input type="hidden" name="id">
+      <div class="layui-form-item"><label class="layui-form-label">日期</label><input class="layui-input" type="date" name="workDate"></div>
+      <div class="layui-form-item"><label class="layui-form-label">上班时间</label><input class="layui-input" type="datetime-local" name="clockInTime"></div>
+      <div class="layui-form-item"><label class="layui-form-label">下班时间</label><input class="layui-input" type="datetime-local" name="clockOutTime"></div>
+      <div class="layui-form-item"><label class="layui-form-label">状态</label><select class="layui-select" name="status"><option value="NORMAL">正常</option><option value="ABNORMAL">异常</option></select></div>
+      <div class="layui-form-item wide"><label class="layui-form-label">备注</label><textarea class="layui-textarea" name="remark"></textarea></div>
+      <div class="layui-form-item wide"><button class="layui-btn" type="submit">保存修改</button><button id="resetBtn" class="layui-btn layui-btn-primary" type="button">清空</button></div>
+    </form>
+  </div></section>
+  <section class="layui-card"><div class="layui-card-header">考勤列表</div><div class="layui-card-body"><div class="table-wrap"><table id="crudTable" class="layui-table"></table></div></div></section>
+</main>
+<script src="/js/common.js"></script>
+<script src="/js/admin-simple.js"></script>
+</body>
+</html>
+

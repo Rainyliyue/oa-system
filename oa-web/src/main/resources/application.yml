@@ -1,0 +1,27 @@
+server:
+  port: 8001
+
+spring:
+  application:
+    name: oa-web
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
+      config:
+        server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
+        import-check:
+          enabled: false
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+
+feign:
+  httpclient:
+    enabled: true
+
+oa:
+  jwt:
+    secret: oa-system-course-design-secret-key-change-me
+    expiration-seconds: 7200

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OA 办公系统注册</title>
+  <link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+<body class="auth-page">
+<main class="auth-box layui-card">
+  <div class="layui-card-header">注册普通用户</div>
+  <div class="layui-card-body">
+    <form id="registerForm" class="layui-form">
+      <div class="layui-form-item wide"><label class="layui-form-label">用户名</label><input class="layui-input" name="username" required></div>
+      <div class="layui-form-item wide"><label class="layui-form-label">密码</label><input class="layui-input" type="password" name="password" required></div>
+      <div class="layui-form-item wide"><label class="layui-form-label">姓名</label><input class="layui-input" name="realName"></div>
+      <div class="layui-form-item wide"><label class="layui-form-label">手机</label><input class="layui-input" name="phone"></div>
+      <div class="layui-form-item wide"><label class="layui-form-label">部门</label><input class="layui-input" name="department"></div>
+      <div class="layui-form-item wide">
+        <button class="layui-btn" type="submit">注册</button>
+        <a class="layui-btn layui-btn-primary" href="/login">返回登录</a>
+      </div>
+    </form>
+  </div>
+</main>
+<script src="/js/common.js"></script>
+<script>
+document.getElementById("registerForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const result = await postJson("/doRegister", formData(event.target));
+  toast(result.msg);
+  if (result.code === 0) {
+    setTimeout(() => location.href = "/login", 600);
+  }
+});
+</script>
+</body>
+</html>
+

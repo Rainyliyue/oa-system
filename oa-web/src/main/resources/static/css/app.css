@@ -1,0 +1,46 @@
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.toolbar .layui-input,
+.toolbar .layui-select {
+  width: 220px;
+}
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+.stat {
+  padding: 18px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+.stat strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 18px;
+}
+.wide {
+  grid-column: 1 / -1;
+}
+.hidden {
+  display: none !important;
+}
+.muted {
+  color: #6b7280;
+}
+
