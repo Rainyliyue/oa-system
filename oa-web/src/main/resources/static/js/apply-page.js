@@ -118,6 +118,41 @@ form.addEventListener("submit", async (event) => {
   }
 });
 
+function updateLeaveDayCount() {
+  if (pageState.type !== "leave") return;
+  const startInput = form.elements.startDate;
+  const endInput = form.elements.endDate;
+  const dayInput = form.elements.dayCount;
+  if (!startInput || !endInput || !dayInput) return;
+
+  const startValue = formatDateForInput(startInput.value);
+  const endValue = formatDateForInput(endInput.value);
+  if (!validDateText(startValue) || !validDateText(endValue)) return;
+
+  const start = parseDateValue(startValue);
+  const end = parseDateValue(endValue);
+  const days = Math.floor((end - start) / 86400000) + 1;
+  if (days > 0) {
+    dayInput.value = days;
+  }
+}
+
+function parseDateValue(value) {
+  const parts = value.split("-").map(Number);
+  return Date.UTC(parts[0], parts[1] - 1, parts[2]);
+}
+
+function setupLeaveDayCount() {
+  if (pageState.type !== "leave") return;
+  const startInput = form.elements.startDate;
+  const endInput = form.elements.endDate;
+  if (!startInput || !endInput) return;
+  ["input", "change", "blur"].forEach(eventName => {
+    startInput.addEventListener(eventName, updateLeaveDayCount);
+    endInput.addEventListener(eventName, updateLeaveDayCount);
+  });
+}
+
 document.getElementById("searchBtn").addEventListener("click", () => {
   pageState.page = 1;
   loadData();
@@ -137,4 +172,5 @@ document.getElementById("nextBtn").addEventListener("click", () => {
 });
 
 configureFields();
+setupLeaveDayCount();
 loadData();
