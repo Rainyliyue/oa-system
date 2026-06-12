@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(value = "oa-application-service", path = "/reimbursement")
+@FeignClient(contextId = "reimbursementFeignClient", value = "oa-application-service", path = "/reimbursement")
 public interface ReimbursementFeignClient {
     @PostMapping("/user/page")
     PageResult<ReimbursementApply> userPage(@RequestBody PageQuery query);
@@ -40,4 +40,3 @@ public interface ReimbursementFeignClient {
     @PostMapping("/admin/{id}/approve")
     AjaxResult<Void> approve(@PathVariable("id") Long id, @RequestBody ApprovalRequest request);
 }
-

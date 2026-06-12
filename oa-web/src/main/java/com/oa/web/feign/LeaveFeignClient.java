@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(value = "oa-application-service", path = "/leave")
+@FeignClient(contextId = "leaveFeignClient", value = "oa-application-service", path = "/leave")
 public interface LeaveFeignClient {
     @PostMapping("/user/page")
     PageResult<LeaveApply> userPage(@RequestBody PageQuery query);
@@ -40,4 +40,3 @@ public interface LeaveFeignClient {
     @PostMapping("/admin/{id}/approve")
     AjaxResult<Void> approve(@PathVariable("id") Long id, @RequestBody ApprovalRequest request);
 }
-

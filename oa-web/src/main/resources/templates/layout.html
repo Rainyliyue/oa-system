@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="header(pageTitle)" class="layui-header">
+  <div class="layui-logo">
+    <a class="brand-link" href="/index"><span class="brand-mark">OA</span><span>办公系统</span></a>
+    <span class="layout-title" th:text="${pageTitle}">工作台</span>
+  </div>
+  <div class="layout-user">
+    <span class="layout-avatar">U</span>
+    <span class="layout-username" th:text="${user != null ? user.realName : '用户'}">用户</span>
+    <a class="logout-link" href="/logout">退出</a>
+  </div>
+</header>
+
+<aside th:fragment="side" class="layui-side">
+  <div class="nav-group">个人办公</div>
+  <div class="layui-nav-item"><a href="/index" data-icon="H" th:classappend="${activeMenu == 'index'} ? ' active'">工作台</a></div>
+  <div class="layui-nav-item"><a href="/user/apply/leave" data-icon="L" th:classappend="${activeMenu == 'user-leave'} ? ' active'">请假申请</a></div>
+  <div class="layui-nav-item"><a href="/user/apply/trip" data-icon="T" th:classappend="${activeMenu == 'user-trip'} ? ' active'">出差申请</a></div>
+  <div class="layui-nav-item"><a href="/user/apply/reimbursement" data-icon="R" th:classappend="${activeMenu == 'user-reimbursement'} ? ' active'">报销申请</a></div>
+  <div class="layui-nav-item"><a href="/user/attendance" data-icon="A" th:classappend="${activeMenu == 'user-attendance'} ? ' active'">考勤打卡</a></div>
+
+  <div th:if="${isAdmin}">
+    <div class="nav-group">系统管理</div>
+    <div class="layui-nav-item"><a href="/admin/users" data-icon="U" th:classappend="${activeMenu == 'admin-users'} ? ' active'">用户管理</a></div>
+    <div class="layui-nav-item"><a href="/admin/roles" data-icon="G" th:classappend="${activeMenu == 'admin-roles'} ? ' active'">权限角色</a></div>
+    <div class="layui-nav-item"><a href="/admin/permissions" data-icon="P" th:classappend="${activeMenu == 'admin-permissions'} ? ' active'">权限资源</a></div>
+    <div class="layui-nav-item"><a href="/admin/attendance" data-icon="K" th:classappend="${activeMenu == 'admin-attendance'} ? ' active'">考勤管理</a></div>
+    <div class="layui-nav-item"><a href="/admin/salary" data-icon="S" th:classappend="${activeMenu == 'admin-salary'} ? ' active'">工资管理</a></div>
+    <div class="layui-nav-item"><a href="/admin/apply/leave" data-icon="L" th:classappend="${activeMenu == 'admin-leave'} ? ' active'">请假管理</a></div>
+    <div class="layui-nav-item"><a href="/admin/apply/trip" data-icon="T" th:classappend="${activeMenu == 'admin-trip'} ? ' active'">出差管理</a></div>
+    <div class="layui-nav-item"><a href="/admin/apply/reimbursement" data-icon="R" th:classappend="${activeMenu == 'admin-reimbursement'} ? ' active'">报销管理</a></div>
+  </div>
+</aside>
+</body>
+</html>

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(value = "oa-user-service", path = "/admin/permissions")
+@FeignClient(contextId = "permissionFeignClient", value = "oa-user-service", path = "/admin/permissions")
 public interface PermissionFeignClient {
     @PostMapping("/page")
     PageResult<SysPermission> page(@RequestBody PageQuery query);
@@ -30,4 +30,3 @@ public interface PermissionFeignClient {
     @DeleteMapping("/{id}")
     AjaxResult<Void> delete(@PathVariable("id") Long id);
 }
-

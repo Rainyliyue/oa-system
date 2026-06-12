@@ -29,8 +29,8 @@ const configs = {
       { key: "id", title: "ID" },
       { key: "username", title: "姓名" },
       { key: "workDate", title: "日期" },
-      { key: "clockInTime", title: "上班" },
-      { key: "clockOutTime", title: "下班" },
+      { key: "clockInTime", title: "上班", render: r => formatDatetimeForInput(r.clockInTime) },
+      { key: "clockOutTime", title: "下班", render: r => formatDatetimeForInput(r.clockOutTime) },
       { key: "status", title: "状态", render: r => badge(r.status) },
       { key: "remark", title: "备注" }
     ]
@@ -78,6 +78,7 @@ async function deleteCrud(id) {
 
 crudForm.addEventListener("submit", async event => {
   event.preventDefault();
+  if (!validateSmartDateInputs(crudForm)) return;
   const data = formData(crudForm);
   const id = data.id;
   delete data.id;

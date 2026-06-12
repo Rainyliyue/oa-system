@@ -9,33 +9,25 @@
 </head>
 <body>
 <div class="layui-layout">
-  <header class="layui-header">
-    <div class="layui-logo">OA 办公系统</div>
-    <div><span th:text="${user.realName}">用户</span> <a href="/logout">退出</a></div>
-  </header>
-  <aside class="layui-side">
-    <div class="layui-nav-item"><a href="/index" class="active">工作台</a></div>
-    <div class="layui-nav-item"><a href="/user/apply/leave">请假申请</a></div>
-    <div class="layui-nav-item"><a href="/user/apply/trip">出差申请</a></div>
-    <div class="layui-nav-item"><a href="/user/apply/reimbursement">报销申请</a></div>
-    <div class="layui-nav-item"><a href="/user/attendance">考勤打卡</a></div>
-    <div th:if="${isAdmin}">
-      <div class="layui-nav-item"><a href="/admin/users">用户管理</a></div>
-      <div class="layui-nav-item"><a href="/admin/roles">权限角色</a></div>
-      <div class="layui-nav-item"><a href="/admin/permissions">权限资源</a></div>
-      <div class="layui-nav-item"><a href="/admin/attendance">考勤管理</a></div>
-      <div class="layui-nav-item"><a href="/admin/salary">工资管理</a></div>
-      <div class="layui-nav-item"><a href="/admin/apply/leave">请假管理</a></div>
-      <div class="layui-nav-item"><a href="/admin/apply/trip">出差管理</a></div>
-      <div class="layui-nav-item"><a href="/admin/apply/reimbursement">报销管理</a></div>
-    </div>
-  </aside>
+  <header th:replace="~{layout :: header('工作台')}"></header>
+  <aside th:replace="~{layout :: side}"></aside>
   <main class="layui-body">
+    <section class="welcome-panel">
+      <div>
+        <span class="eyebrow">WORKSPACE</span>
+        <h1>欢迎使用 OA 办公系统</h1>
+        <p class="muted">请假、出差、报销、考勤与工资信息统一管理。</p>
+      </div>
+      <div class="welcome-user">
+        <span>当前用户</span>
+        <strong th:text="${user != null ? user.realName : '用户'}">用户</strong>
+      </div>
+    </section>
     <div class="home-grid">
-      <section class="stat"><strong>申请流程</strong><span class="muted">请假、出差、报销均支持提交、修改、删除与审批。</span></section>
-      <section class="stat"><strong>考勤打卡</strong><span class="muted">普通用户每天完成上班和下班打卡。</span></section>
-      <section class="stat"><strong>权限分离</strong><span class="muted">管理员菜单仅 ADMIN 角色可见并由 Gateway 拦截。</span></section>
-      <section class="stat"><strong>课程技术栈</strong><span class="muted">Spring Boot 3.0.2 + Nacos 2.2.2 + OpenFeign + Redis + MySQL。</span></section>
+      <section class="stat"><span class="stat-icon">A</span><strong>申请流程</strong><span class="muted">请假、出差、报销均支持提交、修改、删除与审批。</span></section>
+      <section class="stat"><span class="stat-icon">T</span><strong>考勤打卡</strong><span class="muted">普通用户每天完成上班和下班打卡。</span></section>
+      <section class="stat"><span class="stat-icon">R</span><strong>权限分离</strong><span class="muted">管理员菜单仅 ADMIN 角色可见并由 Gateway 拦截。</span></section>
+      <section class="stat"><span class="stat-icon">S</span><strong>课程技术栈</strong><span class="muted">Spring Boot 3.0.2 + Nacos 2.2.2 + OpenFeign + Redis + MySQL。</span></section>
     </div>
   </main>
 </div>

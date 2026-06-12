@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,26 +8,28 @@
   <link rel="stylesheet" href="/css/app.css">
 </head>
 <body data-admin-page="salary">
-<header class="layui-header"><div class="layui-logo">工资管理</div><a href="/index">返回工作台</a></header>
-<main class="layui-body" style="margin-left:0">
-  <section class="layui-card"><div class="layui-card-body"><div class="toolbar"><input id="keyword" class="layui-input" placeholder="姓名/月度"><button id="searchBtn" class="layui-btn">查询</button></div></div></section>
-  <section class="layui-card"><div class="layui-card-header">工资表单</div><div class="layui-card-body">
-    <form id="crudForm" class="layui-form">
-      <input type="hidden" name="id">
-      <div class="layui-form-item"><label class="layui-form-label">用户ID</label><input class="layui-input" name="userId"></div>
-      <div class="layui-form-item"><label class="layui-form-label">姓名</label><input class="layui-input" name="username"></div>
-      <div class="layui-form-item"><label class="layui-form-label">月份</label><input class="layui-input" name="salaryMonth" placeholder="2026-06"></div>
-      <div class="layui-form-item"><label class="layui-form-label">基本工资</label><input class="layui-input" type="number" step="0.01" name="baseSalary"></div>
-      <div class="layui-form-item"><label class="layui-form-label">奖金</label><input class="layui-input" type="number" step="0.01" name="bonus"></div>
-      <div class="layui-form-item"><label class="layui-form-label">扣款</label><input class="layui-input" type="number" step="0.01" name="deduction"></div>
-      <div class="layui-form-item wide"><label class="layui-form-label">备注</label><textarea class="layui-textarea" name="remark"></textarea></div>
-      <div class="layui-form-item wide"><button class="layui-btn" type="submit">保存</button><button id="resetBtn" class="layui-btn layui-btn-primary" type="button">清空</button></div>
-    </form>
-  </div></section>
-  <section class="layui-card"><div class="layui-card-header">工资列表</div><div class="layui-card-body"><div class="table-wrap"><table id="crudTable" class="layui-table"></table></div></div></section>
-</main>
+<div class="layui-layout">
+  <header th:replace="~{layout :: header('工资管理')}"></header>
+  <aside th:replace="~{layout :: side}"></aside>
+  <main class="layui-body">
+    <section class="layui-card"><div class="layui-card-body"><div class="toolbar"><input id="keyword" class="layui-input" placeholder="姓名/月度"><button id="searchBtn" class="layui-btn">查询</button></div></div></section>
+    <section class="layui-card"><div class="layui-card-header">工资表单</div><div class="layui-card-body">
+      <form id="crudForm" class="layui-form">
+        <input type="hidden" name="id">
+        <div class="layui-form-item"><label class="layui-form-label">用户ID</label><input class="layui-input" name="userId"></div>
+        <div class="layui-form-item"><label class="layui-form-label">姓名</label><input class="layui-input" name="username"></div>
+        <div class="layui-form-item"><label class="layui-form-label">月份</label><input class="layui-input" name="salaryMonth" placeholder="2026-06"></div>
+        <div class="layui-form-item"><label class="layui-form-label">基本工资</label><input class="layui-input" type="number" step="0.01" name="baseSalary"></div>
+        <div class="layui-form-item"><label class="layui-form-label">奖金</label><input class="layui-input" type="number" step="0.01" name="bonus"></div>
+        <div class="layui-form-item"><label class="layui-form-label">扣款</label><input class="layui-input" type="number" step="0.01" name="deduction"></div>
+        <div class="layui-form-item wide"><label class="layui-form-label">备注</label><textarea class="layui-textarea" name="remark"></textarea></div>
+        <div class="layui-form-item wide"><button class="layui-btn" type="submit">保存</button><button id="resetBtn" class="layui-btn layui-btn-primary" type="button">清空</button></div>
+      </form>
+    </div></section>
+    <section class="layui-card"><div class="layui-card-header">工资列表</div><div class="layui-card-body"><div class="table-wrap"><table id="crudTable" class="layui-table"></table></div></div></section>
+  </main>
+</div>
 <script src="/js/common.js"></script>
 <script src="/js/admin-simple.js"></script>
 </body>
 </html>
-

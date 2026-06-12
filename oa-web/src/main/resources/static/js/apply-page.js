@@ -13,10 +13,10 @@ function applyColumns() {
     return [
       { key: "id", title: "编号" },
       { key: "username", title: "姓名" },
+      { key: "reason", title: "申请内容", className: "table-content", render: r => contentText(r.reason) },
       { key: "startDate", title: "开始" },
       { key: "endDate", title: "结束" },
       { key: "dayCount", title: "天数" },
-      { key: "reason", title: "事由" },
       { key: "status", title: "状态", render: r => badge(r.status) }
     ];
   }
@@ -25,6 +25,7 @@ function applyColumns() {
       { key: "id", title: "编号" },
       { key: "username", title: "姓名" },
       { key: "destination", title: "目的地" },
+      { key: "reason", title: "申请内容", className: "table-content", render: r => contentText(r.reason) },
       { key: "startDate", title: "开始" },
       { key: "endDate", title: "结束" },
       { key: "budget", title: "预算" },
@@ -35,10 +36,14 @@ function applyColumns() {
     { key: "id", title: "编号" },
     { key: "username", title: "姓名" },
     { key: "title", title: "标题" },
+    { key: "detail", title: "申请内容", className: "table-content", render: r => contentText(r.detail) },
     { key: "amount", title: "金额" },
-    { key: "detail", title: "明细" },
     { key: "status", title: "状态", render: r => badge(r.status) }
   ];
+}
+
+function contentText(value) {
+  return `<div class="table-content-text">${escapeHtml(value || "-")}</div>`;
 }
 
 function configureFields() {
@@ -98,6 +103,7 @@ async function approveApply(id, passed) {
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
+  if (!validateSmartDateInputs(form)) return;
   const data = formData(form);
   const id = data.id;
   delete data.id;
@@ -132,4 +138,3 @@ document.getElementById("nextBtn").addEventListener("click", () => {
 
 configureFields();
 loadData();
-

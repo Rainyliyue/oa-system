@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(value = "oa-attendance-service", path = "/attendance")
+@FeignClient(contextId = "attendanceFeignClient", value = "oa-attendance-service", path = "/attendance")
 public interface AttendanceFeignClient {
     @GetMapping("/user/today")
     AjaxResult<Attendance> today(@RequestParam("userId") Long userId);
@@ -33,4 +33,3 @@ public interface AttendanceFeignClient {
     @DeleteMapping("/admin/{id}")
     AjaxResult<Void> delete(@PathVariable("id") Long id);
 }
-

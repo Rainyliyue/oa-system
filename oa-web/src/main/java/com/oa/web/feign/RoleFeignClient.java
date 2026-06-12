@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(value = "oa-user-service", path = "/admin/roles")
+@FeignClient(contextId = "roleFeignClient", value = "oa-user-service", path = "/admin/roles")
 public interface RoleFeignClient {
     @PostMapping("/page")
     PageResult<SysRole> page(@RequestBody PageQuery query);
@@ -33,4 +33,3 @@ public interface RoleFeignClient {
     @PutMapping("/{id}/permissions")
     AjaxResult<Void> permissions(@PathVariable("id") Long id, @RequestBody List<Long> permissionIds);
 }
-

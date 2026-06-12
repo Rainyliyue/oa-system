@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(value = "oa-user-service", path = "/auth")
+@FeignClient(contextId = "authFeignClient", value = "oa-user-service", path = "/auth")
 public interface AuthFeignClient {
     @PostMapping("/login")
     AjaxResult<AuthToken> login(@RequestBody LoginRequest request);
@@ -24,4 +24,3 @@ public interface AuthFeignClient {
     @PostMapping("/logout")
     AjaxResult<Void> logout();
 }
-

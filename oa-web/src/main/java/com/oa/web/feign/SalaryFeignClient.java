@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(value = "oa-payroll-service", path = "/salary")
+@FeignClient(contextId = "salaryFeignClient", value = "oa-payroll-service", path = "/salary")
 public interface SalaryFeignClient {
     @PostMapping("/admin/page")
     PageResult<Salary> page(@RequestBody PageQuery query);
@@ -25,4 +25,3 @@ public interface SalaryFeignClient {
     @DeleteMapping("/admin/{id}")
     AjaxResult<Void> delete(@PathVariable("id") Long id);
 }
-

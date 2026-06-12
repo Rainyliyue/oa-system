@@ -2,37 +2,99 @@
   display: flex;
   flex-wrap: wrap;
   align-items: end;
-  gap: 10px;
-  margin-bottom: 12px;
+  gap: 12px;
+  margin-bottom: 0;
 }
 .toolbar .layui-input,
 .toolbar .layui-select {
-  width: 220px;
+  width: 240px;
+}
+.toolbar .layui-btn {
+  min-width: 86px;
 }
 .table-wrap {
   width: 100%;
   overflow-x: auto;
+  border-radius: 8px;
 }
 .actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 7px;
+  min-width: 104px;
 }
 .home-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+.welcome-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+  padding: 24px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 62%, #ecfeff 100%);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, .06);
+}
+.welcome-panel h1 {
+  margin: 6px 0 6px;
+  font-size: 26px;
+  line-height: 1.25;
+  color: #0f172a;
+}
+.eyebrow {
+  color: #0891b2;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+.welcome-user {
+  min-width: 170px;
+  padding: 14px 16px;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  background: #f0f9ff;
+}
+.welcome-user span {
+  display: block;
+  color: #64748b;
+  font-size: 12px;
+}
+.welcome-user strong {
+  display: block;
+  margin-top: 4px;
+  color: #0f172a;
+  font-size: 20px;
 }
 .stat {
-  padding: 18px;
+  position: relative;
+  min-height: 150px;
+  padding: 20px;
   background: #fff;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, .06);
 }
 .stat strong {
   display: block;
-  margin-bottom: 6px;
+  margin: 12px 0 8px;
   font-size: 18px;
+  color: #0f172a;
+}
+.stat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-weight: 800;
 }
 .wide {
   grid-column: 1 / -1;
@@ -44,3 +106,18 @@
   color: #6b7280;
 }
 
+@media (max-width: 820px) {
+  .toolbar .layui-input,
+  .toolbar .layui-select,
+  .toolbar .layui-btn {
+    width: 100%;
+  }
+  .welcome-panel {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 18px;
+  }
+  .welcome-user {
+    min-width: 0;
+  }
+}

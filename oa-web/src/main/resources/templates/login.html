@@ -5,21 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OA 办公系统登录</title>
   <link rel="stylesheet" href="/layui/css/layui.css">
+  <link rel="stylesheet" href="/css/app.css">
 </head>
 <body class="auth-page">
 <main class="auth-box layui-card">
-  <div class="layui-card-header">OA 办公系统登录</div>
+  <div class="auth-brand">
+    <div class="auth-mark">OA</div>
+    <div>
+      <h1>OA 办公系统</h1>
+      <p>统一办公入口</p>
+    </div>
+  </div>
+  <div class="layui-card-header">账号登录</div>
   <div class="layui-card-body">
     <form id="loginForm" class="layui-form">
       <div class="layui-form-item wide">
         <label class="layui-form-label">用户名</label>
-        <input class="layui-input" name="username" autocomplete="username" required>
+        <input class="layui-input" name="username" autocomplete="username" placeholder="请输入用户名" required>
       </div>
       <div class="layui-form-item wide">
         <label class="layui-form-label">密码</label>
-        <input class="layui-input" type="password" name="password" autocomplete="current-password" required>
+        <input class="layui-input" type="password" name="password" autocomplete="current-password" placeholder="请输入密码" required>
       </div>
-      <div class="layui-form-item wide">
+      <div class="layui-form-item wide auth-actions">
         <button class="layui-btn" type="submit">登录</button>
         <a class="layui-btn layui-btn-primary" href="/register">注册账号</a>
       </div>
@@ -39,4 +47,3 @@ document.getElementById("loginForm").addEventListener("submit", async (event) =>
 </script>
 </body>
 </html>
-
