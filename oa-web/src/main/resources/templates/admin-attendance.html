@@ -12,7 +12,8 @@
   <header th:replace="~{layout :: header('考勤管理')}"></header>
   <aside th:replace="~{layout :: side}"></aside>
   <main class="layui-body">
-    <section class="layui-card"><div class="layui-card-body"><div class="toolbar"><input id="keyword" class="layui-input" placeholder="姓名/备注"><button id="searchBtn" class="layui-btn">查询</button></div></div></section>
+    <section class="layui-card"><div class="layui-card-body"><div class="toolbar"><input id="keyword" class="layui-input" data-query="keyword" placeholder="姓名/备注"><input class="layui-input" data-query="userId" data-query-number placeholder="用户ID"><select class="layui-select" data-query="status"><option value="">全部状态</option><option value="NORMAL">正常</option><option value="ABNORMAL">异常</option></select><input class="layui-input" type="text" data-query="startDate" data-date-input inputmode="numeric" maxlength="10" placeholder="考勤日期"><button id="searchBtn" class="layui-btn">查询</button><button id="resetQueryBtn" class="layui-btn layui-btn-primary" type="button">重置</button></div></div></section>
+    <section class="layui-card"><div class="layui-card-header">考勤列表</div><div class="layui-card-body"><div class="table-wrap"><table id="crudTable" class="layui-table"></table></div></div></section>
     <section class="layui-card"><div class="layui-card-header">修改考勤</div><div class="layui-card-body">
       <form id="crudForm" class="layui-form">
         <input type="hidden" name="id">
@@ -24,7 +25,6 @@
         <div class="layui-form-item wide"><button class="layui-btn" type="submit">保存修改</button><button id="resetBtn" class="layui-btn layui-btn-primary" type="button">清空</button></div>
       </form>
     </div></section>
-    <section class="layui-card"><div class="layui-card-header">考勤列表</div><div class="layui-card-body"><div class="table-wrap"><table id="crudTable" class="layui-table"></table></div></div></section>
   </main>
 </div>
 <script src="/js/common.js"></script>

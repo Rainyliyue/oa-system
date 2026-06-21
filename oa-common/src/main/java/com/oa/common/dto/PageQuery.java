@@ -1,5 +1,6 @@
 package com.oa.common.dto;
 
+import java.time.LocalDate;
 import lombok.Data;
 
 @Data
@@ -9,6 +10,11 @@ public class PageQuery {
     private String keyword;
     private String status;
     private Long userId;
+    private Boolean enabled;
+    private String type;
+    private String salaryMonth;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     public long offset() {
         int safePage = page == null || page < 1 ? 1 : page;
@@ -24,4 +30,3 @@ public class PageQuery {
         return limit == null || limit < 1 ? 10 : limit;
     }
 }
-

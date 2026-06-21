@@ -6,6 +6,8 @@ import lombok.Data;
 public class ApprovalRequest {
     private Long id;
     private Boolean passed;
+    private Boolean finalApproval = true;
     private String auditComment;
+    private Long approverId;
+    private String approverName;
 }
-

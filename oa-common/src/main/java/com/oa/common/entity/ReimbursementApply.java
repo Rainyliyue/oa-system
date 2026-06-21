@@ -17,10 +17,10 @@ public class ReimbursementApply {
     private String title;
     private BigDecimal amount;
     private String detail;
+    private String evidenceImage;
     private String status;
     private String auditComment;
     private LocalDateTime approveTime;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 }
-

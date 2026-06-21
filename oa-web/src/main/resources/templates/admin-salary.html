@@ -12,7 +12,8 @@
   <header th:replace="~{layout :: header('工资管理')}"></header>
   <aside th:replace="~{layout :: side}"></aside>
   <main class="layui-body">
-    <section class="layui-card"><div class="layui-card-body"><div class="toolbar"><input id="keyword" class="layui-input" placeholder="姓名/月度"><button id="searchBtn" class="layui-btn">查询</button></div></div></section>
+    <section class="layui-card"><div class="layui-card-body"><div class="toolbar"><input id="keyword" class="layui-input" data-query="keyword" placeholder="姓名/备注"><input class="layui-input" data-query="userId" data-query-number placeholder="用户ID"><input class="layui-input" data-query="salaryMonth" placeholder="工资月份，如 2026-06"><button id="searchBtn" class="layui-btn">查询</button><button id="resetQueryBtn" class="layui-btn layui-btn-primary" type="button">重置</button></div></div></section>
+    <section class="layui-card"><div class="layui-card-header">工资列表</div><div class="layui-card-body"><div class="table-wrap"><table id="crudTable" class="layui-table"></table></div></div></section>
     <section class="layui-card"><div class="layui-card-header">工资表单</div><div class="layui-card-body">
       <form id="crudForm" class="layui-form">
         <input type="hidden" name="id">
@@ -26,7 +27,6 @@
         <div class="layui-form-item wide"><button class="layui-btn" type="submit">保存</button><button id="resetBtn" class="layui-btn layui-btn-primary" type="button">清空</button></div>
       </form>
     </div></section>
-    <section class="layui-card"><div class="layui-card-header">工资列表</div><div class="layui-card-body"><div class="table-wrap"><table id="crudTable" class="layui-table"></table></div></div></section>
   </main>
 </div>
 <script src="/js/common.js"></script>

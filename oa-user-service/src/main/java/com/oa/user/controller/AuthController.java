@@ -25,6 +25,7 @@ import java.util.List;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -82,6 +83,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
+    @Transactional
     public AjaxResult<Void> register(@RequestBody RegisterRequest request) {
         if (!StringUtils.hasText(request.getUsername()) || !StringUtils.hasText(request.getPassword())) {
             return AjaxResult.error("用户名和密码不能为空");
@@ -166,4 +168,3 @@ public class AuthController {
         return null;
     }
 }
-

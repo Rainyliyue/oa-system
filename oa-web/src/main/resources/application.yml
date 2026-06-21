@@ -16,6 +16,10 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
     cache: false
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 6MB
 
 feign:
   httpclient:
@@ -25,3 +29,5 @@ oa:
   jwt:
     secret: oa-system-course-design-secret-key-change-me
     expiration-seconds: 7200
+  upload:
+    image-dir: ${OA_UPLOAD_IMAGE_DIR:uploads/images}

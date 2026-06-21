@@ -16,6 +16,7 @@ public class LeaveApply {
     private Long userId;
     private String username;
     private String reason;
+    private String evidenceImage;
     private LocalDate startDate;
     private LocalDate endDate;
     private BigDecimal dayCount;
@@ -25,4 +26,3 @@ public class LeaveApply {
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 }
-

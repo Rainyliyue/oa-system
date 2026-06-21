@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OA 办公系统</title>
   <link rel="stylesheet" href="/layui/css/layui.css">
-  <link rel="stylesheet" href="/css/app.css">
+  <link rel="stylesheet" href="/css/app.css?v=home-shortcut-20260616">
 </head>
-<body>
+<body class="workbench-page">
 <div class="layui-layout">
   <header th:replace="~{layout :: header('工作台')}"></header>
   <aside th:replace="~{layout :: side}"></aside>
@@ -23,13 +23,83 @@
         <strong th:text="${user != null ? user.realName : '用户'}">用户</strong>
       </div>
     </section>
-    <div class="home-grid">
-      <section class="stat"><span class="stat-icon">A</span><strong>申请流程</strong><span class="muted">请假、出差、报销均支持提交、修改、删除与审批。</span></section>
-      <section class="stat"><span class="stat-icon">T</span><strong>考勤打卡</strong><span class="muted">普通用户每天完成上班和下班打卡。</span></section>
-      <section class="stat"><span class="stat-icon">R</span><strong>权限分离</strong><span class="muted">管理员菜单仅 ADMIN 角色可见并由 Gateway 拦截。</span></section>
-      <section class="stat"><span class="stat-icon">S</span><strong>课程技术栈</strong><span class="muted">Spring Boot 3.0.2 + Nacos 2.2.2 + OpenFeign + Redis + MySQL。</span></section>
-    </div>
+
+    <section class="home-grid dashboard-stats">
+      <div class="stat">
+        <span class="stat-icon">审</span>
+        <strong id="pendingApprovalCount">0</strong>
+        <span class="muted">待审批</span>
+      </div>
+      <div class="stat">
+        <span class="stat-icon">勤</span>
+        <strong id="monthlyAttendanceCount">0</strong>
+        <span class="muted">本月考勤</span>
+      </div>
+      <div class="stat">
+        <span class="stat-icon">申</span>
+        <strong id="monthlyApplicationCount">0</strong>
+        <span class="muted">本月申请</span>
+      </div>
+      <div class="stat">
+        <span class="stat-icon">信</span>
+        <strong id="unreadNoticeCount">0</strong>
+        <span class="muted">未读通知</span>
+      </div>
+    </section>
+
+    <section class="clock-card">
+      <div class="clock-card-content">
+        <span class="eyebrow">TODAY ATTENDANCE</span>
+        <h2>今日考勤</h2>
+        <p id="homeTodayInfo" class="muted">加载中...</p>
+        <div class="clock-actions">
+          <button id="homeClockInBtn" class="layui-btn layui-btn-normal" type="button">上班打卡</button>
+          <button id="homeClockOutBtn" class="layui-btn" type="button">下班打卡</button>
+          <a class="layui-btn layui-btn-primary" href="/user/attendance">查看考勤</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="notice-panel">
+      <div class="section-title">
+        <div>
+          <span class="eyebrow">MESSAGE CENTER</span>
+          <h2>消息提醒</h2>
+        </div>
+        <button id="markAllNoticeBtn" class="layui-btn layui-btn-primary" type="button">全部已读</button>
+      </div>
+      <div id="noticeList" class="notice-list muted">加载中...</div>
+    </section>
+
+    <section class="shortcut-panel">
+      <div class="section-title">
+        <div>
+          <span class="eyebrow">QUICK ACCESS</span>
+          <h2>快捷入口</h2>
+        </div>
+        <span class="muted">常用个人办公功能</span>
+      </div>
+      <div class="shortcut-grid">
+        <a class="shortcut-entry entry-leave" href="/user/apply/leave">
+          <span class="shortcut-icon">假</span>
+          <strong>请假申请</strong>
+          <span>提交或查看请假记录</span>
+        </a>
+        <a class="shortcut-entry entry-trip" href="/user/apply/trip">
+          <span class="shortcut-icon">差</span>
+          <strong>出差申请</strong>
+          <span>提交或查看出差记录</span>
+        </a>
+        <a class="shortcut-entry entry-attendance" href="/user/attendance">
+          <span class="shortcut-icon">勤</span>
+          <strong>考勤打卡</strong>
+          <span>进入考勤打卡页面</span>
+        </a>
+      </div>
+    </section>
   </main>
 </div>
+<script src="/js/common.js"></script>
+<script src="/js/index.js"></script>
 </body>
 </html>

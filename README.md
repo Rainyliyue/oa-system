@@ -44,6 +44,12 @@ source sql/init.sql;
 
 如果你已经有旧的 MySQL 数据卷，初始化脚本不会自动重复执行，可以手动导入 `sql/init.sql`。
 
+如果是在旧库基础上升级图片证据功能，不需要重建数据库，执行：
+
+```sql
+source sql/alter_add_evidence_image.sql;
+```
+
 默认账号由 `oa-user-service` 首次启动时自动写入，并使用 BCrypt 加密：
 
 - 管理员：`admin / 123456`
@@ -69,6 +75,12 @@ REDIS_PORT=7379
 NACOS_SERVER_ADDR=127.0.0.1:8848
 ```
 
+申请证据图片默认保存到 `oa-web` 运行目录下的 `uploads/images`，可通过环境变量覆盖：
+
+```bash
+OA_UPLOAD_IMAGE_DIR=C:/Users/87152/Documents/OA/uploads/images
+```
+
 ## 启动顺序
 
 1. 启动基础设施：
@@ -81,6 +93,15 @@ docker compose up -d
 
 ```bash
 mvn clean package
+```
+
+旧数据库升级时先执行新增字段/表脚本：
+
+```bash
+docker cp sql/alter_add_evidence_image.sql oa-mysql:/tmp/alter_add_evidence_image.sql
+docker exec oa-mysql mysql -uroot -p123456 -e "SOURCE /tmp/alter_add_evidence_image.sql;"
+docker cp sql/alter_add_workflow_notice_log.sql oa-mysql:/tmp/alter_add_workflow_notice_log.sql
+docker exec oa-mysql mysql -uroot -p123456 -e "SOURCE /tmp/alter_add_workflow_notice_log.sql;"
 ```
 
 3. 依次启动：
@@ -102,8 +123,9 @@ http://localhost:9000/login
 
 ## 功能
 
-- 普通用户：注册、登录、请假申请、出差申请、报销申请、上班/下班打卡。
-- 管理员：用户管理、角色权限管理、考勤管理、工资管理、请假/出差/报销审批。
+- 普通用户：注册、登录、请假申请、出差申请、报销申请、图片证据上传、上班/下班打卡。
+- 管理员：用户管理、角色权限管理、考勤管理、工资管理、操作日志、请假/出差/报销审批。
+- 工作台：首页统计、未读消息提醒、审批历史明细。
 - 申请状态：`PENDING`、`APPROVED`、`REJECTED`、`FINISHED`。
 - Gateway 会拦截未登录请求，并限制普通用户访问 `/admin/**` 和 `/api/admin/**`。
 

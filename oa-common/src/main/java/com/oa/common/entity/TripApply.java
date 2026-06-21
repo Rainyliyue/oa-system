@@ -17,6 +17,7 @@ public class TripApply {
     private String username;
     private String destination;
     private String reason;
+    private String evidenceImage;
     private LocalDate startDate;
     private LocalDate endDate;
     private BigDecimal budget;
@@ -26,4 +27,3 @@ public class TripApply {
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 }
-

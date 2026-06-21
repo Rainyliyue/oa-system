@@ -40,6 +40,9 @@ public class PermissionController {
                     .or()
                     .like(SysPermission::getPath, query.getKeyword()));
         }
+        if (StringUtils.hasText(query.getType())) {
+            wrapper.eq(SysPermission::getType, query.getType());
+        }
         Page<SysPermission> result = permissionMapper.selectPage(page, wrapper);
         return PageResult.success(result.getTotal(), result.getRecords());
     }
@@ -82,4 +85,3 @@ public class PermissionController {
         return AjaxResult.success();
     }
 }
-

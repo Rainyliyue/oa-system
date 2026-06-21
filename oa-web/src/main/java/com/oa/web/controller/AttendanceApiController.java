@@ -7,6 +7,7 @@ import com.oa.common.result.AjaxResult;
 import com.oa.common.result.PageResult;
 import com.oa.web.feign.AttendanceFeignClient;
 import com.oa.web.security.CurrentUser;
+import com.oa.web.support.AdminOperationLogger;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class AttendanceApiController {
     private final AttendanceFeignClient attendanceFeignClient;
     private final CurrentUser currentUser;
+    private final AdminOperationLogger operationLogger;
 
-    public AttendanceApiController(AttendanceFeignClient attendanceFeignClient, CurrentUser currentUser) {
+    public AttendanceApiController(AttendanceFeignClient attendanceFeignClient,
+                                   CurrentUser currentUser,
+                                   AdminOperationLogger operationLogger) {
         this.attendanceFeignClient = attendanceFeignClient;
         this.currentUser = currentUser;
+        this.operationLogger = operationLogger;
     }
 
     @GetMapping("/user/attendance/today")
@@ -57,13 +62,18 @@ public class AttendanceApiController {
     }
 
     @PutMapping("/admin/attendance/{id}")
-    public AjaxResult<Void> update(@PathVariable Long id, @RequestBody Attendance attendance) {
-        return attendanceFeignClient.update(id, attendance);
+    public AjaxResult<Void> update(@PathVariable Long id,
+                                   @RequestBody Attendance attendance,
+                                   HttpServletRequest request) {
+        AjaxResult<Void> result = attendanceFeignClient.update(id, attendance);
+        operationLogger.logIfSuccess(request, result, "考勤管理", "UPDATE", "oa_attendance", id, "修改考勤记录：" + id);
+        return result;
     }
 
     @DeleteMapping("/admin/attendance/{id}")
-    public AjaxResult<Void> delete(@PathVariable Long id) {
-        return attendanceFeignClient.delete(id);
+    public AjaxResult<Void> delete(@PathVariable Long id, HttpServletRequest request) {
+        AjaxResult<Void> result = attendanceFeignClient.delete(id);
+        operationLogger.logIfSuccess(request, result, "考勤管理", "DELETE", "oa_attendance", id, "删除考勤记录：" + id);
+        return result;
     }
 }
-

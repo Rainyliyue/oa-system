@@ -1,5 +1,11 @@
 const adminPage = document.body.dataset.adminPage;
 const crudForm = document.getElementById("crudForm");
+const crudPageState = {
+  page: 1,
+  limit: 10,
+  count: 0,
+  rows: []
+};
 
 const configs = {
   roles: {
@@ -53,20 +59,30 @@ const configs = {
 const config = configs[adminPage];
 
 async function loadCrud() {
-  const result = await postJson(`${config.base}/page`, {
-    page: 1,
-    limit: 100,
-    keyword: document.getElementById("keyword").value
-  });
-  renderTable(document.getElementById("crudTable"), config.columns, result.data || [], row =>
+  const params = queryParams();
+  if (!params) return;
+  const result = await postJson(`${config.base}/page`, Object.assign({
+    page: crudPageState.page,
+    limit: crudPageState.limit
+  }, params));
+  crudPageState.rows = result.data || [];
+  crudPageState.count = result.count || 0;
+  const table = document.getElementById("crudTable");
+  renderTable(table, config.columns, crudPageState.rows, row =>
     `<button class="layui-btn layui-btn-xs" onclick='editCrud(${JSON.stringify(row)})'>编辑</button>` +
     `<button class="layui-btn layui-btn-danger layui-btn-xs" onclick="deleteCrud(${row.id})">删除</button>`
   );
+  renderPager(ensurePager(table, "crudPager"), crudPageState, loadCrud);
+}
+
+function searchCrud() {
+  crudPageState.page = 1;
+  loadCrud();
 }
 
 function editCrud(row) {
   fillForm(crudForm, row);
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  scrollToForm(crudForm);
 }
 
 async function deleteCrud(id) {
@@ -90,10 +106,12 @@ crudForm.addEventListener("submit", async event => {
   toast(result.msg);
   if (result.code === 0) {
     resetForm(crudForm);
-    loadCrud();
+    searchCrud();
   }
 });
 
 document.getElementById("resetBtn").addEventListener("click", () => resetForm(crudForm));
-document.getElementById("searchBtn").addEventListener("click", loadCrud);
+document.getElementById("searchBtn").addEventListener("click", searchCrud);
+setupQueryControls(searchCrud);
+ensureExportButton(() => exportRowsToCsv(`${adminPage}.csv`, config.columns, crudPageState.rows));
 loadCrud();

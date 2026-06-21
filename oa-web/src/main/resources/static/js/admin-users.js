@@ -1,24 +1,41 @@
 let userRows = [];
 const userForm = document.getElementById("crudForm");
+const userPageState = {
+  page: 1,
+  limit: 10,
+  count: 0
+};
+const userColumns = [
+  { key: "id", title: "ID" },
+  { key: "username", title: "用户名" },
+  { key: "realName", title: "姓名" },
+  { key: "department", title: "部门" },
+  { key: "roleCodes", title: "角色", render: r => (r.roleCodes || []).join(",") },
+  { key: "enabled", title: "状态", render: r => r.enabled ? "启用" : "禁用" }
+];
+
 async function loadUsers() {
-  const result = await postJson("/api/admin/users/page", {
-    page: 1,
-    limit: 100,
-    keyword: document.getElementById("keyword").value
-  });
+  const params = queryParams();
+  if (!params) return;
+  const result = await postJson("/api/admin/users/page", Object.assign({
+    page: userPageState.page,
+    limit: userPageState.limit
+  }, params));
   userRows = result.data || [];
-  renderTable(document.getElementById("crudTable"), [
-    { key: "id", title: "ID" },
-    { key: "username", title: "用户名" },
-    { key: "realName", title: "姓名" },
-    { key: "department", title: "部门" },
-    { key: "roleCodes", title: "角色", render: r => (r.roleCodes || []).join(",") },
-    { key: "enabled", title: "状态", render: r => r.enabled ? "启用" : "禁用" }
-  ], userRows, row => `<button class="layui-btn layui-btn-xs" onclick='editUser(${JSON.stringify(row)})'>编辑</button><button class="layui-btn layui-btn-danger layui-btn-xs" onclick="deleteUser(${row.id})">删除</button>`);
+  userPageState.count = result.count || 0;
+  const table = document.getElementById("crudTable");
+  renderTable(table, userColumns, userRows, row => `<button class="layui-btn layui-btn-xs" onclick='editUser(${JSON.stringify(row)})'>编辑</button><button class="layui-btn layui-btn-danger layui-btn-xs" onclick="deleteUser(${row.id})">删除</button>`);
+  renderPager(ensurePager(table, "crudPager"), userPageState, loadUsers);
+}
+
+function searchUsers() {
+  userPageState.page = 1;
+  loadUsers();
 }
 function editUser(row) {
   fillForm(userForm, row);
   userForm.username.disabled = true;
+  scrollToForm(userForm);
 }
 async function deleteUser(id) {
   if (!confirm("确定删除用户吗？")) return;
@@ -40,9 +57,11 @@ userForm.addEventListener("submit", async event => {
   if (result.code === 0) {
     resetForm(userForm);
     userForm.username.disabled = false;
-    loadUsers();
+    searchUsers();
   }
 });
 document.getElementById("resetBtn").addEventListener("click", () => { resetForm(userForm); userForm.username.disabled = false; });
-document.getElementById("searchBtn").addEventListener("click", loadUsers);
+document.getElementById("searchBtn").addEventListener("click", searchUsers);
+setupQueryControls(searchUsers);
+ensureExportButton(() => exportRowsToCsv("users.csv", userColumns, userRows));
 loadUsers();

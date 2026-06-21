@@ -63,6 +63,7 @@ CREATE TABLE oa_leave_apply (
   user_id BIGINT NOT NULL,
   username VARCHAR(64),
   reason VARCHAR(500),
+  evidence_image VARCHAR(255),
   start_date DATE,
   end_date DATE,
   day_count DECIMAL(8,2),
@@ -81,6 +82,7 @@ CREATE TABLE oa_trip_apply (
   username VARCHAR(64),
   destination VARCHAR(128),
   reason VARCHAR(500),
+  evidence_image VARCHAR(255),
   start_date DATE,
   end_date DATE,
   budget DECIMAL(12,2),
@@ -100,6 +102,7 @@ CREATE TABLE oa_reimbursement_apply (
   title VARCHAR(128),
   amount DECIMAL(12,2),
   detail VARCHAR(500),
+  evidence_image VARCHAR(255),
   status VARCHAR(32) NOT NULL DEFAULT 'PENDING',
   audit_comment VARCHAR(500),
   approve_time DATETIME,
@@ -140,3 +143,41 @@ CREATE TABLE oa_salary (
   KEY idx_salary_month (salary_month)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE oa_approval_history (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  apply_type VARCHAR(32) NOT NULL,
+  apply_id BIGINT NOT NULL,
+  approver_id BIGINT,
+  approver_name VARCHAR(64),
+  approval_level INT NOT NULL DEFAULT 1,
+  result VARCHAR(32) NOT NULL,
+  audit_comment VARCHAR(500),
+  create_time DATETIME,
+  KEY idx_approval_apply (apply_type, apply_id),
+  KEY idx_approval_approver (approver_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE sys_notice (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  user_id BIGINT NOT NULL,
+  title VARCHAR(128) NOT NULL,
+  content VARCHAR(500),
+  read_flag TINYINT(1) NOT NULL DEFAULT 0,
+  create_time DATETIME,
+  KEY idx_notice_user_read (user_id, read_flag),
+  KEY idx_notice_time (create_time)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE sys_operation_log (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  operator_id BIGINT,
+  operator_name VARCHAR(64),
+  module_name VARCHAR(64),
+  operation_type VARCHAR(32),
+  target_type VARCHAR(64),
+  target_id BIGINT,
+  content VARCHAR(500),
+  create_time DATETIME,
+  KEY idx_operation_operator (operator_id),
+  KEY idx_operation_time (create_time)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

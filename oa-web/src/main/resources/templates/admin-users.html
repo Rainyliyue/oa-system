@@ -12,7 +12,8 @@
   <header th:replace="~{layout :: header('用户管理')}"></header>
   <aside th:replace="~{layout :: side}"></aside>
   <main class="layui-body">
-    <section class="layui-card"><div class="layui-card-body"><div class="toolbar"><input id="keyword" class="layui-input" placeholder="用户名/姓名/部门"><button id="searchBtn" class="layui-btn">查询</button></div></div></section>
+    <section class="layui-card"><div class="layui-card-body"><div class="toolbar"><input id="keyword" class="layui-input" data-query="keyword" placeholder="用户名/姓名/部门/手机"><select class="layui-select" data-query="enabled" data-query-boolean><option value="">全部状态</option><option value="true">启用</option><option value="false">禁用</option></select><button id="searchBtn" class="layui-btn">查询</button><button id="resetQueryBtn" class="layui-btn layui-btn-primary" type="button">重置</button></div></div></section>
+    <section class="layui-card"><div class="layui-card-header">用户列表</div><div class="layui-card-body"><div class="table-wrap"><table id="crudTable" class="layui-table"></table></div></div></section>
     <section class="layui-card">
       <div class="layui-card-header">用户表单</div>
       <div class="layui-card-body">
@@ -29,7 +30,6 @@
         </form>
       </div>
     </section>
-    <section class="layui-card"><div class="layui-card-header">用户列表</div><div class="layui-card-body"><div class="table-wrap"><table id="crudTable" class="layui-table"></table></div></div></section>
   </main>
 </div>
 <script src="/js/common.js"></script>

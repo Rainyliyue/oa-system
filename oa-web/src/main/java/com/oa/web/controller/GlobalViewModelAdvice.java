@@ -37,6 +37,7 @@ public class GlobalViewModelAdvice {
             case "/admin/permissions" -> "admin-permissions";
             case "/admin/attendance" -> "admin-attendance";
             case "/admin/salary" -> "admin-salary";
+            case "/admin/logs" -> "admin-logs";
             case "/admin/apply/leave" -> "admin-leave";
             case "/admin/apply/trip" -> "admin-trip";
             case "/admin/apply/reimbursement" -> "admin-reimbursement";

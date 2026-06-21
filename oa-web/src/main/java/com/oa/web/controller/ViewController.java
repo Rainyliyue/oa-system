@@ -74,6 +74,11 @@ public class ViewController {
         return "admin-salary";
     }
 
+    @GetMapping("/admin/logs")
+    public String logs() {
+        return "admin-logs";
+    }
+
     private void fillApplyModel(String type, boolean admin, Model model) {
         model.addAttribute("type", type);
         model.addAttribute("admin", admin);
@@ -85,4 +90,3 @@ public class ViewController {
         });
     }
 }
-
