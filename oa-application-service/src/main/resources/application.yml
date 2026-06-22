@@ -24,3 +24,17 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-}]"
+
+seata:
+  enabled: ${SEATA_ENABLED:false}
+  application-id: ${spring.application.name}
+  tx-service-group: oa_tx_group
+  service:
+    vgroup-mapping:
+      oa_tx_group: default
+    grouplist:
+      default: ${SEATA_SERVER_ADDR:127.0.0.1:8091}

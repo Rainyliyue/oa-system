@@ -79,6 +79,37 @@ services:
     networks:
       - oa-network
 
+  sentinel-dashboard:
+    image: bladex/sentinel-dashboard:1.8.6
+    container_name: oa-sentinel
+    restart: unless-stopped
+    profiles:
+      - sentinel
+    environment:
+      TZ: Asia/Shanghai
+      JAVA_OPTS: "-Dserver.port=8858 -Dcsp.sentinel.dashboard.server=localhost:8858 -Dproject.name=sentinel-dashboard"
+    ports:
+      - "${SENTINEL_DASHBOARD_PORT:-8858}:8858"
+    networks:
+      - oa-network
+
+  seata-service:
+    image: seataio/seata-server:1.7.0
+    container_name: oa-seata
+    restart: unless-stopped
+    profiles:
+      - tx
+    environment:
+      TZ: Asia/Shanghai
+      STORE_MODE: file
+      SEATA_IP: 127.0.0.1
+      SEATA_PORT: 8091
+    ports:
+      - "${SEATA_PORT:-8091}:8091"
+      - "${SEATA_CONSOLE_PORT:-7091}:7091"
+    networks:
+      - oa-network
+
 networks:
   oa-network:
     driver: bridge

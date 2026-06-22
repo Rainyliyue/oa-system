@@ -1,5 +1,7 @@
 package com.oa.web.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.oa.common.dto.LoginUser;
 import com.oa.common.result.AjaxResult;
 import com.oa.web.security.CurrentUser;
@@ -39,6 +41,7 @@ public class FileUploadController {
     }
 
     @PostMapping("/images")
+    @SentinelResource(value = "file:upload:image", blockHandler = "uploadImageBlocked", fallback = "uploadImageFallback")
     public AjaxResult<String> uploadImage(@RequestParam("file") MultipartFile file,
                                           HttpServletRequest request) {
         LoginUser user = currentUser.get(request);
@@ -80,6 +83,18 @@ public class FileUploadController {
         }
 
         return AjaxResult.success("/uploads/images/" + dateDir + "/" + filename);
+    }
+
+    public AjaxResult<String> uploadImageBlocked(MultipartFile file,
+                                                 HttpServletRequest request,
+                                                 BlockException exception) {
+        return AjaxResult.error("图片上传请求过于频繁，请稍后再试");
+    }
+
+    public AjaxResult<String> uploadImageFallback(MultipartFile file,
+                                                  HttpServletRequest request,
+                                                  Throwable throwable) {
+        return AjaxResult.error("图片上传暂不可用，请稍后重试");
     }
 
     private String extension(String filename) {

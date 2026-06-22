@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title th:text="${title}">申请管理</title>
   <link rel="stylesheet" href="/layui/css/layui.css">
-  <link rel="stylesheet" href="/css/app.css?v=apply-evidence-20260620">
+  <link rel="stylesheet" href="/css/app.css?v=apply-evidence-20260622">
 </head>
 <body th:attr="data-type=${type},data-admin=${admin}">
 <div class="layui-layout">
@@ -97,7 +97,12 @@
             <label class="layui-form-label">证据图片</label>
             <input type="hidden" name="evidenceImage" data-include-empty>
             <div class="upload-field">
-              <input id="evidenceImageFile" class="layui-input upload-input" type="file" accept="image/*">
+              <label class="layui-btn upload-file-btn" for="evidenceImageFile">
+                <i class="layui-icon layui-icon-upload"></i>
+                <span>选择图片</span>
+              </label>
+              <span id="evidenceFileName" class="upload-file-name">未选择文件</span>
+              <input id="evidenceImageFile" class="upload-file-input" type="file" accept="image/*">
               <button id="clearEvidenceBtn" class="layui-btn layui-btn-primary" type="button">移除图片</button>
             </div>
             <div id="evidencePreview" class="evidence-preview muted">未上传图片</div>

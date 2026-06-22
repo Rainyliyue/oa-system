@@ -53,31 +53,56 @@ function setStatValue(id, value) {
 }
 
 async function loadNotices() {
-  const result = await postJson("/api/notices/page", { page: 1, limit: 5 });
-  if (result.code !== 0) {
-    noticeList.textContent = result.msg || "消息加载失败";
-    return;
+  try {
+    const result = await postJson("/api/notices/page", { page: 1, limit: 6 });
+    if (result.code !== 0) {
+      renderNoticeEmpty(result.msg || "消息加载失败");
+      return;
+    }
+    renderNotices(result.data || []);
+  } catch (error) {
+    renderNoticeEmpty("消息加载失败，请稍后刷新");
   }
-  renderNotices(result.data || []);
 }
 
 function renderNotices(rows) {
   if (!rows.length) {
-    noticeList.classList.add("muted");
-    noticeList.textContent = "暂无消息提醒";
+    renderNoticeEmpty("暂无消息提醒");
     return;
   }
   noticeList.classList.remove("muted");
   noticeList.innerHTML = rows.map(item => `
     <div class="notice-item ${item.readFlag ? "is-read" : ""}">
-      <div>
-        <strong>${escapeHtml(item.title || "系统通知")}</strong>
+      <span class="notice-dot">${item.targetUrl ? "待" : "信"}</span>
+      <div class="notice-main">
+        <div class="notice-title-row">
+          <strong>${escapeHtml(item.title || "系统通知")}</strong>
+          <span class="notice-tag">${item.targetUrl ? "待处理" : (item.readFlag ? "已读" : "未读")}</span>
+        </div>
         <p>${escapeHtml(item.content || "")}</p>
         <time>${escapeHtml(formatDatetimeForInput(item.createTime) || "-")}</time>
       </div>
-      ${item.readFlag ? `<span class="notice-state">已读</span>` : `<button class="layui-btn layui-btn-xs" type="button" data-notice-read="${item.id}">已读</button>`}
+      ${noticeAction(item)}
     </div>
   `).join("");
+}
+
+function renderNoticeEmpty(text) {
+  noticeList.classList.add("muted");
+  noticeList.innerHTML = `<div class="notice-empty">${escapeHtml(text)}</div>`;
+}
+
+function noticeAction(item) {
+  if (item.targetUrl) {
+    return `<a class="layui-btn layui-btn-xs" href="${escapeHtml(item.targetUrl)}">去处理</a>`;
+  }
+  if (item.readFlag) {
+    return `<span class="notice-state">已读</span>`;
+  }
+  if (item.id) {
+    return `<button class="layui-btn layui-btn-primary layui-btn-xs" type="button" data-notice-read="${item.id}">标记已读</button>`;
+  }
+  return "";
 }
 
 async function markNoticeRead(id) {

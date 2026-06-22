@@ -12,6 +12,21 @@ spring:
         server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
         import-check:
           enabled: false
+    sentinel:
+      transport:
+        dashboard: ${SENTINEL_DASHBOARD:127.0.0.1:8858}
+        port: ${SENTINEL_WEB_PORT:8721}
+    openfeign:
+      circuitbreaker:
+        enabled: true
+      client:
+        config:
+          default:
+            connectTimeout: ${FEIGN_CONNECT_TIMEOUT:3000}
+            readTimeout: ${FEIGN_READ_TIMEOUT:5000}
+            loggerLevel: ${FEIGN_LOGGER_LEVEL:basic}
+      httpclient:
+        enabled: true
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
@@ -21,9 +36,11 @@ spring:
       max-file-size: 5MB
       max-request-size: 6MB
 
-feign:
-  httpclient:
-    enabled: true
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-}]"
+  level:
+    com.oa.web.feign: DEBUG
 
 oa:
   jwt:
@@ -31,3 +48,17 @@ oa:
     expiration-seconds: 7200
   upload:
     image-dir: ${OA_UPLOAD_IMAGE_DIR:uploads/images}
+
+feign:
+  sentinel:
+    enabled: true
+
+seata:
+  enabled: ${SEATA_ENABLED:false}
+  application-id: ${spring.application.name}
+  tx-service-group: oa_tx_group
+  service:
+    vgroup-mapping:
+      oa_tx_group: default
+    grouplist:
+      default: ${SEATA_SERVER_ADDR:127.0.0.1:8091}

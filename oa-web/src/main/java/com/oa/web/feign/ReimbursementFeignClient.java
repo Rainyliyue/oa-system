@@ -5,21 +5,27 @@ import com.oa.common.dto.PageQuery;
 import com.oa.common.entity.ReimbursementApply;
 import com.oa.common.result.AjaxResult;
 import com.oa.common.result.PageResult;
+import com.oa.web.feign.fallback.ReimbursementFeignFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(contextId = "reimbursementFeignClient", value = "oa-application-service", path = "/reimbursement")
+@FeignClient(contextId = "reimbursementFeignClient", value = "oa-application-service", path = "/reimbursement",
+        fallbackFactory = ReimbursementFeignFallbackFactory.class)
 public interface ReimbursementFeignClient {
     @PostMapping("/user/page")
     PageResult<ReimbursementApply> userPage(@RequestBody PageQuery query);
 
     @PostMapping("/admin/page")
     PageResult<ReimbursementApply> adminPage(@RequestBody PageQuery query);
+
+    @GetMapping("/admin/{id}")
+    AjaxResult<ReimbursementApply> adminDetail(@PathVariable("id") Long id);
 
     @PostMapping
     AjaxResult<Void> add(@RequestBody ReimbursementApply apply);

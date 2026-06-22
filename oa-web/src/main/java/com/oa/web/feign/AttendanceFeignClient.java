@@ -4,6 +4,7 @@ import com.oa.common.dto.PageQuery;
 import com.oa.common.entity.Attendance;
 import com.oa.common.result.AjaxResult;
 import com.oa.common.result.PageResult;
+import com.oa.web.feign.fallback.AttendanceFeignFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +14,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(contextId = "attendanceFeignClient", value = "oa-attendance-service", path = "/attendance")
+@FeignClient(contextId = "attendanceFeignClient", value = "oa-attendance-service", path = "/attendance",
+        fallbackFactory = AttendanceFeignFallbackFactory.class)
 public interface AttendanceFeignClient {
     @GetMapping("/user/today")
     AjaxResult<Attendance> today(@RequestParam("userId") Long userId);

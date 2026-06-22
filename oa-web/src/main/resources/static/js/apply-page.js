@@ -9,6 +9,7 @@ const pageState = {
 const form = document.getElementById("applyForm");
 const evidenceInput = form.elements.evidenceImage;
 const evidenceFileInput = document.getElementById("evidenceImageFile");
+const evidenceFileName = document.getElementById("evidenceFileName");
 const evidencePreview = document.getElementById("evidencePreview");
 const clearEvidenceBtn = document.getElementById("clearEvidenceBtn");
 const detailModal = document.getElementById("detailModal");
@@ -285,14 +286,17 @@ form.addEventListener("submit", async (event) => {
 evidenceFileInput.addEventListener("change", async () => {
   const file = evidenceFileInput.files && evidenceFileInput.files[0];
   if (!file) return;
+  updateEvidenceFileName(file.name);
   if (!file.type || !file.type.startsWith("image/")) {
     toast("请选择图片文件");
     evidenceFileInput.value = "";
+    updateEvidenceFileName();
     return;
   }
   if (file.size > 5 * 1024 * 1024) {
     toast("图片大小不能超过 5MB");
     evidenceFileInput.value = "";
+    updateEvidenceFileName();
     return;
   }
 
@@ -312,14 +316,17 @@ evidenceFileInput.addEventListener("change", async () => {
     toast(result.msg);
     if (result.code === 0) {
       evidenceInput.value = result.data || "";
+      updateEvidenceFileName("已上传图片");
       updateEvidencePreview();
     } else {
       evidenceFileInput.value = "";
+      updateEvidenceFileName();
       updateEvidencePreview();
     }
   } catch (error) {
     toast("图片上传失败");
     evidenceFileInput.value = "";
+    updateEvidenceFileName();
     updateEvidencePreview();
   } finally {
     evidenceUploading = false;
@@ -329,6 +336,7 @@ evidenceFileInput.addEventListener("change", async () => {
 clearEvidenceBtn.addEventListener("click", () => {
   evidenceInput.value = "";
   evidenceFileInput.value = "";
+  updateEvidenceFileName();
   updateEvidencePreview();
 });
 
@@ -347,13 +355,22 @@ document.addEventListener("keydown", event => {
 function updateEvidencePreview() {
   const value = evidenceInput.value;
   if (!value) {
+    updateEvidenceFileName();
     evidencePreview.classList.add("muted");
     evidencePreview.innerHTML = "未上传图片";
     return;
   }
+  updateEvidenceFileName("已上传图片");
   const url = escapeHtml(value);
   evidencePreview.classList.remove("muted");
   evidencePreview.innerHTML = `<a href="${url}" target="_blank"><img class="evidence-preview-img" src="${url}" alt="证据图片预览"><span>查看原图</span></a>`;
+}
+
+function updateEvidenceFileName(text) {
+  if (!evidenceFileName) return;
+  const display = text || (evidenceInput && evidenceInput.value ? "已上传图片" : "未选择文件");
+  evidenceFileName.textContent = display;
+  evidenceFileName.classList.toggle("has-file", display !== "未选择文件");
 }
 
 function updateLeaveDayCount() {
@@ -402,6 +419,7 @@ setupQueryControls(() => {
 document.getElementById("resetBtn").addEventListener("click", () => {
   resetForm(form);
   evidenceFileInput.value = "";
+  updateEvidenceFileName();
   updateEvidencePreview();
 });
 document.getElementById("prevBtn").addEventListener("click", () => {

@@ -1,5 +1,7 @@
 package com.oa.web.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oa.common.dto.ApprovalRequest;
 import com.oa.common.dto.LoginUser;
@@ -15,6 +17,7 @@ import com.oa.web.feign.ReimbursementFeignClient;
 import com.oa.web.feign.TripFeignClient;
 import com.oa.web.feign.WorkflowFeignClient;
 import com.oa.web.security.CurrentUser;
+import com.oa.web.service.ApprovalOrchestrationService;
 import com.oa.web.support.AdminOperationLogger;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -38,6 +41,7 @@ public class ApplicationApiController {
     private final ObjectMapper objectMapper;
     private final CurrentUser currentUser;
     private final AdminOperationLogger operationLogger;
+    private final ApprovalOrchestrationService approvalOrchestrationService;
 
     public ApplicationApiController(LeaveFeignClient leaveFeignClient,
                                     TripFeignClient tripFeignClient,
@@ -45,7 +49,8 @@ public class ApplicationApiController {
                                     WorkflowFeignClient workflowFeignClient,
                                     ObjectMapper objectMapper,
                                     CurrentUser currentUser,
-                                    AdminOperationLogger operationLogger) {
+                                    AdminOperationLogger operationLogger,
+                                    ApprovalOrchestrationService approvalOrchestrationService) {
         this.leaveFeignClient = leaveFeignClient;
         this.tripFeignClient = tripFeignClient;
         this.reimbursementFeignClient = reimbursementFeignClient;
@@ -53,6 +58,7 @@ public class ApplicationApiController {
         this.objectMapper = objectMapper;
         this.currentUser = currentUser;
         this.operationLogger = operationLogger;
+        this.approvalOrchestrationService = approvalOrchestrationService;
     }
 
     @PostMapping("/user/applications/{type}/page")
@@ -155,6 +161,7 @@ public class ApplicationApiController {
     }
 
     @PostMapping("/admin/applications/{type}/{id}/approve")
+    @SentinelResource(value = "application:approve", blockHandler = "approveBlocked", fallback = "approveFallback")
     public AjaxResult<Void> approve(@PathVariable String type,
                                     @PathVariable Long id,
                                     @RequestBody ApprovalRequest body,
@@ -164,12 +171,23 @@ public class ApplicationApiController {
             body.setApproverId(user.getId());
             body.setApproverName(user.getRealName());
         }
-        return switch (type) {
-            case "leave" -> leaveFeignClient.approve(id, body);
-            case "trip" -> tripFeignClient.approve(id, body);
-            case "reimbursement" -> reimbursementFeignClient.approve(id, body);
-            default -> AjaxResult.error("未知申请类型");
-        };
+        return approvalOrchestrationService.approve(type, id, body);
+    }
+
+    public AjaxResult<Void> approveBlocked(String type,
+                                           Long id,
+                                           ApprovalRequest body,
+                                           HttpServletRequest request,
+                                           BlockException exception) {
+        return AjaxResult.error("审批请求过于频繁，请稍后再试");
+    }
+
+    public AjaxResult<Void> approveFallback(String type,
+                                            Long id,
+                                            ApprovalRequest body,
+                                            HttpServletRequest request,
+                                            Throwable throwable) {
+        return AjaxResult.error(throwable.getMessage() == null ? "审批服务暂不可用，请稍后重试" : throwable.getMessage());
     }
 
     @GetMapping("/applications/{type}/{id}/history")

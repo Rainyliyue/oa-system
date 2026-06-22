@@ -32,6 +32,8 @@
         <mysql.version>8.0.33</mysql.version>
         <springdoc.version>2.0.2</springdoc.version>
         <lombok.version>1.18.32</lombok.version>
+        <sentinel.version>1.8.6</sentinel.version>
+        <druid.version>1.2.20</druid.version>
     </properties>
 
     <dependencyManagement>
@@ -91,6 +93,16 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.csp</groupId>
+                <artifactId>sentinel-spring-cloud-gateway-adapter</artifactId>
+                <version>${sentinel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

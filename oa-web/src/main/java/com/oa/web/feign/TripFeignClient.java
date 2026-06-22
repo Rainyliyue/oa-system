@@ -5,6 +5,7 @@ import com.oa.common.dto.PageQuery;
 import com.oa.common.entity.TripApply;
 import com.oa.common.result.AjaxResult;
 import com.oa.common.result.PageResult;
+import com.oa.web.feign.fallback.TripFeignFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +14,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(contextId = "tripFeignClient", value = "oa-application-service", path = "/trip")
+@FeignClient(contextId = "tripFeignClient", value = "oa-application-service", path = "/trip",
+        fallbackFactory = TripFeignFallbackFactory.class)
 public interface TripFeignClient {
     @PostMapping("/user/page")
     PageResult<TripApply> userPage(@RequestBody PageQuery query);

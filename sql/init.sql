@@ -11,6 +11,7 @@ DROP TABLE IF EXISTS oa_trip_apply;
 DROP TABLE IF EXISTS oa_reimbursement_apply;
 DROP TABLE IF EXISTS oa_attendance;
 DROP TABLE IF EXISTS oa_salary;
+DROP TABLE IF EXISTS undo_log;
 
 CREATE TABLE sys_user (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -142,6 +143,17 @@ CREATE TABLE oa_salary (
   UNIQUE KEY uk_salary_user_month (user_id, salary_month),
   KEY idx_salary_month (salary_month)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE undo_log (
+  branch_id BIGINT NOT NULL COMMENT 'branch transaction id',
+  xid VARCHAR(128) NOT NULL COMMENT 'global transaction id',
+  context VARCHAR(128) NOT NULL COMMENT 'undo_log context',
+  rollback_info LONGBLOB NOT NULL COMMENT 'rollback info',
+  log_status INT NOT NULL COMMENT '0 normal, 1 defense',
+  log_created DATETIME(6) NOT NULL COMMENT 'create datetime',
+  log_modified DATETIME(6) NOT NULL COMMENT 'modify datetime',
+  UNIQUE KEY ux_undo_log (xid, branch_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Seata AT undo log';
 
 CREATE TABLE oa_approval_history (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,

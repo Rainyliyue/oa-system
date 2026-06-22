@@ -131,6 +131,14 @@ public class ApplicationApplyService {
         return PageResult.success(result.getTotal(), result.getRecords());
     }
 
+    public AjaxResult<ReimbursementApply> reimbursementDetail(Long id) {
+        ReimbursementApply apply = reimbursementMapper.selectById(id);
+        if (apply == null) {
+            return AjaxResult.error("报销记录不存在");
+        }
+        return AjaxResult.success(apply);
+    }
+
     @Transactional
     public AjaxResult<Void> addLeave(LeaveApply apply) {
         apply.setStatus(ApprovalStatus.PENDING.name());

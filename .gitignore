@@ -5,6 +5,7 @@ target/
 *.iml
 .vscode/
 .DS_Store
+.env
 logs/
 uploads/
 *.pdf

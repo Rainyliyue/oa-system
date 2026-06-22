@@ -7,6 +7,7 @@ import com.oa.common.entity.OperationLog;
 import com.oa.common.entity.SystemNotice;
 import com.oa.common.result.AjaxResult;
 import com.oa.common.result.PageResult;
+import com.oa.web.feign.fallback.WorkflowFeignFallbackFactory;
 import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(contextId = "workflowFeignClient", value = "oa-application-service", path = "/workflow")
+@FeignClient(contextId = "workflowFeignClient", value = "oa-application-service", path = "/workflow",
+        fallbackFactory = WorkflowFeignFallbackFactory.class)
 public interface WorkflowFeignClient {
     @GetMapping("/approval-history/{type}/{id}")
     AjaxResult<List<ApprovalHistory>> approvalHistory(@PathVariable("type") String type,

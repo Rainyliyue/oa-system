@@ -12,6 +12,10 @@ spring:
         server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
         import-check:
           enabled: false
+    sentinel:
+      transport:
+        dashboard: ${SENTINEL_DASHBOARD:127.0.0.1:8858}
+        port: ${SENTINEL_GATEWAY_PORT:8720}
     gateway:
       discovery:
         locator:
@@ -33,5 +37,7 @@ oa:
     expiration-seconds: 7200
 
 logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-}]"
   level:
     org.springframework.cloud.gateway: info

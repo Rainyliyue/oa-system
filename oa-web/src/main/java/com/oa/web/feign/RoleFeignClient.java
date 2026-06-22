@@ -4,6 +4,7 @@ import com.oa.common.dto.PageQuery;
 import com.oa.common.entity.SysRole;
 import com.oa.common.result.AjaxResult;
 import com.oa.common.result.PageResult;
+import com.oa.web.feign.fallback.RoleFeignFallbackFactory;
 import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,7 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(contextId = "roleFeignClient", value = "oa-user-service", path = "/admin/roles")
+@FeignClient(contextId = "roleFeignClient", value = "oa-user-service", path = "/admin/roles",
+        fallbackFactory = RoleFeignFallbackFactory.class)
 public interface RoleFeignClient {
     @PostMapping("/page")
     PageResult<SysRole> page(@RequestBody PageQuery query);

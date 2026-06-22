@@ -34,3 +34,7 @@ oa:
   jwt:
     secret: oa-system-course-design-secret-key-change-me
     expiration-seconds: 7200
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-}]"

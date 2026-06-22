@@ -7,6 +7,7 @@ import com.oa.common.entity.ReimbursementApply;
 import com.oa.common.result.AjaxResult;
 import com.oa.common.result.PageResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,6 +33,11 @@ public class ReimbursementController {
     @PostMapping("/admin/page")
     public PageResult<ReimbursementApply> adminPage(@RequestBody PageQuery query) {
         return service.reimbursementPage(query, false);
+    }
+
+    @GetMapping("/admin/{id}")
+    public AjaxResult<ReimbursementApply> adminDetail(@PathVariable Long id) {
+        return service.reimbursementDetail(id);
     }
 
     @PostMapping

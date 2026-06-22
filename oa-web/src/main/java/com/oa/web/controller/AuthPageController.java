@@ -1,5 +1,7 @@
 package com.oa.web.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.oa.common.dto.AuthToken;
 import com.oa.common.dto.LoginRequest;
 import com.oa.common.dto.RegisterRequest;
@@ -34,6 +36,7 @@ public class AuthPageController {
 
     @PostMapping("/doLogin")
     @ResponseBody
+    @SentinelResource(value = "auth:login", blockHandler = "doLoginBlocked", fallback = "doLoginFallback")
     public AjaxResult<AuthToken> doLogin(@RequestBody LoginRequest request, HttpServletResponse response) {
         AjaxResult<AuthToken> result = authFeignClient.login(request);
         if (result.ok() && result.getData() != null) {
@@ -44,6 +47,18 @@ public class AuthPageController {
             response.addCookie(cookie);
         }
         return result;
+    }
+
+    public AjaxResult<AuthToken> doLoginBlocked(LoginRequest request,
+                                                HttpServletResponse response,
+                                                BlockException exception) {
+        return AjaxResult.error("登录请求过于频繁，请稍后再试");
+    }
+
+    public AjaxResult<AuthToken> doLoginFallback(LoginRequest request,
+                                                 HttpServletResponse response,
+                                                 Throwable throwable) {
+        return AjaxResult.error("登录服务暂不可用，请稍后重试");
     }
 
     @PostMapping("/doRegister")
@@ -67,4 +82,3 @@ public class AuthPageController {
         return "redirect:/login";
     }
 }
-

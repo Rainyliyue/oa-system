@@ -1,6 +1,7 @@
 package com.oa.payroll.controller;
 
 import com.oa.common.dto.PageQuery;
+import com.oa.common.dto.ReimbursementSalaryRequest;
 import com.oa.common.entity.Salary;
 import com.oa.common.result.AjaxResult;
 import com.oa.common.result.PageResult;
@@ -30,6 +31,11 @@ public class SalaryController {
     @PostMapping("/admin")
     public AjaxResult<Void> add(@RequestBody Salary salary) {
         return service.add(salary);
+    }
+
+    @PostMapping("/admin/reimbursement-bonus")
+    public AjaxResult<Void> applyReimbursementBonus(@RequestBody ReimbursementSalaryRequest request) {
+        return service.applyReimbursementBonus(request);
     }
 
     @PutMapping("/admin/{id}")
